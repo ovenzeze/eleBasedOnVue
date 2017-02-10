@@ -146,5 +146,4 @@ export default{
         font-size: 10px
         right: 12px
         top: 8px
-
 </style>
