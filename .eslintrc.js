@@ -22,6 +22,7 @@ module.exports = {
     "indent": 0,
     "space-before-function-paren": 0,
     "comma-spacing": 0,
-    "quotes": 0
+    "quotes": 0,
+    "no-mixed-spaces-and-tabs": 0
   }
 }
