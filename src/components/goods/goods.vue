@@ -14,7 +14,7 @@
         <li v-for="item in goods" class="food-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul>
-            <li v-for="food in item.foods" class="food-item">
+            <li v-for="food in item.foods" class="food-item border-1px"  @click="selectFood(food,$event)">
               <div class="icon">
                 <img width="57px" :src="food.icon">
               </div>
@@ -38,13 +38,15 @@
         </li>
       </ul>
     </div>
-    <shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
+    <shopcart v-ref:shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>
   </div>
+  <food :food="selectedFood" v-ref:food></food>
 </template>
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
   import shopcart from 'components/shopcart/shopcart';
   import cartcontrol from 'components/cartcontrol/cartcontrol';
+  import food from 'components/food/food';
   const ERR_OK = 0;
 	export default {
 	    props: {
@@ -56,7 +58,8 @@
 	        return {
 	            goods: [],
               listHeight: [],
-              scrollY: 0
+              scrollY: 0,
+              selectedFood: {}
           };
       },
       computed: {
@@ -96,7 +99,7 @@
         });
       },
       methods: {
-        selectMenu(index,event) {
+          selectMenu(index,event) {
           if (!event._constructed) {
             return;
           }
@@ -106,7 +109,7 @@
           this.foodsScroll.scrollToElement(el,300);
         },
           _drop(target) {
-
+            this.$refs.shopcart.drop(target);// 访问子组件的drop方法并传递参数
           },
 	        _initScroll() {
 	            this.menuScroll = new BScroll(this.$els.menuWrapper,{
@@ -129,14 +132,22 @@
 	                height += item.clientHeight;
 	                this.listHeight.push(height);
               }
+          },
+          selectFood(food,event) {
+              if (!event._constructed) {
+                  return;
+              }
+              this.selectFood = food;
+              this.$refs.food.show();
           }
       },
       components: {
 	        shopcart: shopcart,
-          cartcontrol: cartcontrol
+          cartcontrol: cartcontrol,
+          food: food
       },
       events: {
-	        'cart.add'(target){
+	        'cart.add'(target) {
 	           this._drop(target);
   }
       }
