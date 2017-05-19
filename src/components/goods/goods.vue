@@ -73,7 +73,7 @@
               }
               return 0;
           },
-        selectFoods() {
+          selectFoods() {
 	            let foods = [];
 	            this.goods.forEach((good) => {
 	                good.foods.forEach((food) => {
@@ -137,7 +137,7 @@
               if (!event._constructed) {
                   return;
               }
-              this.selectFood = food;
+              this.selectedFood = food;
               this.$refs.food.show();
           }
       },
